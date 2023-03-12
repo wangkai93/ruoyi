@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TTechProcessMapper">
+    
+    <resultMap type="TTechProcess" id="TTechProcessResult">
+        <result property="processId"    column="process_id"    />
+        <result property="routeId"    column="route_id"    />
+        <result property="processNum"    column="process_num"    />
+        <result property="processName"    column="process_name"    />
+        <result property="isOutsource"    column="is_outsource"    />
+        <result property="outsourcePrice"    column="outsource_price"    />
+        <result property="device"    column="device"    />
+        <result property="tool"    column="tool"    />
+        <result property="workHours"    column="work_hours"    />
+        <result property="processDescription"    column="process_description"    />
+        <result property="processPicture"    column="process_picture"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="attr1"    column="attr1"    />
+        <result property="attr2"    column="attr2"    />
+        <result property="attr3"    column="attr3"    />
+        <result property="attr4"    column="attr4"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="cteateTime"    column="cteate_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTTechProcessVo">
+        select process_id, route_id, process_num, process_name, is_outsource, outsource_price, device, tool, work_hours, process_description, process_picture, status, remark, attr1, attr2, attr3, attr4, create_by, cteate_time, update_by, update_time from t_tech_process
+    </sql>
+
+    <select id="selectTTechProcessList" parameterType="TTechProcess" resultMap="TTechProcessResult">
+        <include refid="selectTTechProcessVo"/>
+        <where>  
+            <if test="routeId != null "> and route_id = #{routeId}</if>
+            <if test="processNum != null  and processNum != ''"> and process_num = #{processNum}</if>
+            <if test="processName != null  and processName != ''"> and process_name like concat('%', #{processName}, '%')</if>
+            <if test="isOutsource != null "> and is_outsource = #{isOutsource}</if>
+            <if test="outsourcePrice != null "> and outsource_price = #{outsourcePrice}</if>
+            <if test="device != null  and device != ''"> and device = #{device}</if>
+            <if test="tool != null  and tool != ''"> and tool = #{tool}</if>
+            <if test="workHours != null "> and work_hours = #{workHours}</if>
+            <if test="processDescription != null  and processDescription != ''"> and process_description = #{processDescription}</if>
+            <if test="processPicture != null  and processPicture != ''"> and process_picture = #{processPicture}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="attr1 != null  and attr1 != ''"> and attr1 = #{attr1}</if>
+            <if test="attr2 != null  and attr2 != ''"> and attr2 = #{attr2}</if>
+            <if test="attr3 != null "> and attr3 = #{attr3}</if>
+            <if test="attr4 != null "> and attr4 = #{attr4}</if>
+            <if test="cteateTime != null "> and cteate_time = #{cteateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTTechProcessByProcessId" parameterType="Long" resultMap="TTechProcessResult">
+        <include refid="selectTTechProcessVo"/>
+        where process_id = #{processId}
+    </select>
+        
+    <insert id="insertTTechProcess" parameterType="TTechProcess" useGeneratedKeys="true" keyProperty="processId">
+        insert into t_tech_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeId != null">route_id,</if>
+            <if test="processNum != null and processNum != ''">process_num,</if>
+            <if test="processName != null and processName != ''">process_name,</if>
+            <if test="isOutsource != null">is_outsource,</if>
+            <if test="outsourcePrice != null">outsource_price,</if>
+            <if test="device != null and device != ''">device,</if>
+            <if test="tool != null and tool != ''">tool,</if>
+            <if test="workHours != null">work_hours,</if>
+            <if test="processDescription != null and processDescription != ''">process_description,</if>
+            <if test="processPicture != null and processPicture != ''">process_picture,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="attr1 != null and attr1 != ''">attr1,</if>
+            <if test="attr2 != null and attr2 != ''">attr2,</if>
+            <if test="attr3 != null">attr3,</if>
+            <if test="attr4 != null">attr4,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="cteateTime != null">cteate_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeId != null">#{routeId},</if>
+            <if test="processNum != null and processNum != ''">#{processNum},</if>
+            <if test="processName != null and processName != ''">#{processName},</if>
+            <if test="isOutsource != null">#{isOutsource},</if>
+            <if test="outsourcePrice != null">#{outsourcePrice},</if>
+            <if test="device != null and device != ''">#{device},</if>
+            <if test="tool != null and tool != ''">#{tool},</if>
+            <if test="workHours != null">#{workHours},</if>
+            <if test="processDescription != null and processDescription != ''">#{processDescription},</if>
+            <if test="processPicture != null and processPicture != ''">#{processPicture},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="attr1 != null and attr1 != ''">#{attr1},</if>
+            <if test="attr2 != null and attr2 != ''">#{attr2},</if>
+            <if test="attr3 != null">#{attr3},</if>
+            <if test="attr4 != null">#{attr4},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="cteateTime != null">#{cteateTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTTechProcess" parameterType="TTechProcess">
+        update t_tech_process
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeId != null">route_id = #{routeId},</if>
+            <if test="processNum != null and processNum != ''">process_num = #{processNum},</if>
+            <if test="processName != null and processName != ''">process_name = #{processName},</if>
+            <if test="isOutsource != null">is_outsource = #{isOutsource},</if>
+            <if test="outsourcePrice != null">outsource_price = #{outsourcePrice},</if>
+            <if test="device != null and device != ''">device = #{device},</if>
+            <if test="tool != null and tool != ''">tool = #{tool},</if>
+            <if test="workHours != null">work_hours = #{workHours},</if>
+            <if test="processDescription != null and processDescription != ''">process_description = #{processDescription},</if>
+            <if test="processPicture != null and processPicture != ''">process_picture = #{processPicture},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="attr1 != null and attr1 != ''">attr1 = #{attr1},</if>
+            <if test="attr2 != null and attr2 != ''">attr2 = #{attr2},</if>
+            <if test="attr3 != null">attr3 = #{attr3},</if>
+            <if test="attr4 != null">attr4 = #{attr4},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="cteateTime != null">cteate_time = #{cteateTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where process_id = #{processId}
+    </update>
+
+    <delete id="deleteTTechProcessByProcessId" parameterType="Long">
+        delete from t_tech_process where process_id = #{processId}
+    </delete>
+
+    <delete id="deleteTTechProcessByProcessIds" parameterType="String">
+        delete from t_tech_process where process_id in 
+        <foreach item="processId" collection="array" open="(" separator="," close=")">
+            #{processId}
+        </foreach>
+    </delete>
+
+</mapper>

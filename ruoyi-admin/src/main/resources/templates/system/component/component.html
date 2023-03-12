@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('产品/零/组件信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>父节点ID：</label>
+                                <input type="text" name="parentId"/>
+                            </li>
+                            <!-- <li>
+                                <label>是否为父节点：</label>
+                                <input type="text" name="isParent"/>
+                            </li> -->
+                            <li>
+                                <label>图号：</label>
+                                <input type="text" name="productNum"/>
+                            </li>
+                            <li>
+                                <label>名称：</label>
+                                <input type="text" name="productName"/>
+                            </li>
+                            <li>
+                                <label>计量单位：</label>
+                                <input type="text" name="meterageUnit"/>
+                            </li>
+                            <li>
+                                <label>单套数量：</label>
+                                <input type="text" name="assembleQuantity"/>
+                            </li>
+                            <li>
+                                <label>专项费用：</label>
+                                <input type="text" name="specialItem"/>
+                            </li>
+                            <li>
+                                <label>材料牌号：</label>
+                                <input type="text" name="materialGrade"/>
+                            </li>
+                            <li>
+                                <label>技术条件：</label>
+                                <input type="text" name="technicalConditions"/>
+                            </li>
+                            <li>
+                                <label>材料规格：</label>
+                                <input type="text" name="materialSpecification"/>
+                            </li>
+                            <li>
+                                <label>单件定额：</label>
+                                <input type="text" name="singlePieceQuota"/>
+                            </li>
+                            <li>
+                                <label>废品损失金额：</label>
+                                <input type="text" name="wasteLoss"/>
+                            </li>
+                            <li>
+                                <label>型号规格：</label>
+                                <input type="text" name="modelSpecification"/>
+                            </li>
+                            <!-- <li>
+                                <label>预留字段1：</label>
+                                <input type="text" name="attr1"/>
+                            </li>
+                            <li>
+                                <label>预留字段2：</label>
+                                <input type="text" name="attr2"/>
+                            </li>
+                            <li>
+                                <label>预留字段3：</label>
+                                <input type="text" name="attr3"/>
+                            </li>
+                            <li>
+                                <label>预留字段4：</label>
+                                <input type="text" name="attr4"/>
+                            </li> -->
+                            <li>
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择创建时间" name="cteateTime"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:component:add">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:component:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-info" id="expandAllBtn">
+                    <i class="fa fa-exchange"></i> 展开/折叠
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-tree-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var addFlag = [[${@permission.hasPermi('system:component:add')}]];
+        var editFlag = [[${@permission.hasPermi('system:component:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:component:remove')}]];
+        var prefix = ctx + "system/component";
+
+        $(function() {
+            var options = {
+                code: "productId",
+                parentCode: "parentId",
+                expandColumn: "4",
+                uniqueId: "productId",
+                url: prefix + "/list",
+                createUrl: prefix + "/add/{id}",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove/{id}",
+                modalName: "产品/零/组件信息",
+                columns: [{
+                    field: 'selectItem',
+                    radio: true
+                },
+                // {
+                //     field: 'parentId',
+                //     title: '父节点ID',
+                //     align: 'left'
+                // },
+                // {
+                //     field: 'isParent',
+                //     title: '是否为父节点',
+                //     align: 'left'
+                // },
+                {
+                    field: 'productName',
+                    title: '名称',
+                    align: 'left'
+                },
+                {
+                    field: 'productNum',
+                    title: '图号',
+                    align: 'left'
+                },
+                // {
+                //     field: 'productType',
+                //     title: '种类1: 产品，2：组件，3:零件',
+                //     align: 'left'
+                // },
+                {
+                    field: 'productMakeType',
+                    title: '制造方式',
+                    align: 'left'
+                },
+                {
+                    field: 'meterageUnit',
+                    title: '计量单位',
+                    align: 'left'
+                },
+                {
+                    field: 'assembleQuantity',
+                    title: '单套数量',
+                    align: 'left'
+                },
+                {
+                    field: 'specialItem',
+                    title: '专项费用',
+                    align: 'left'
+                },
+                {
+                    field: 'materialGrade',
+                    title: '材料牌号',
+                    align: 'left'
+                },
+                {
+                    field: 'technicalConditions',
+                    title: '技术条件',
+                    align: 'left'
+                },
+                {
+                    field: 'materialSpecification',
+                    title: '材料规格',
+                    align: 'left'
+                },
+                {
+                    field: 'singlePieceQuota',
+                    title: '单件定额',
+                    align: 'left'
+                },
+                {
+                    field: 'wasteLoss',
+                    title: '废品损失金额',
+                    align: 'left'
+                },
+                {
+                    field: 'modelSpecification',
+                    title: '型号规格',
+                    align: 'left'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: 'left'
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    align: 'left'
+                },
+                // {
+                //     field: 'attr1',
+                //     title: '预留字段1',
+                //     align: 'left'
+                // },
+                // {
+                //     field: 'attr2',
+                //     title: '预留字段2',
+                //     align: 'left'
+                // },
+                // {
+                //     field: 'attr3',
+                //     title: '预留字段3',
+                //     align: 'left'
+                // },
+                // {
+                //     field: 'attr4',
+                //     title: '预留字段4',
+                //     align: 'left'
+                // },
+                {
+                    field: 'cteateTime',
+                    title: '创建时间',
+                    align: 'left'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    align: 'left',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info  btn-xs ' + addFlag + '" href="javascript:void(0)" onclick="$.operate.add(\'' + row.productId + '\')"><i class="fa fa-plus"></i>新增</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.treeTable.init(options);
+        });
+    </script>
+</body>
+</html>
